@@ -10,9 +10,9 @@ class ProductListCreateView(ListCreateAPIView):
     def get_queryset(self):
         # products = Product.objects.filter(available=True)
         products = ProductModel.objects.all()
-        category_slug = self.request.query_params.get('category_slug', None)
-        if category_slug:
-            products = products.filter(category__slug__exact=category_slug)
+        category_id = self.request.query_params.get('category_id', None)
+        if category_id:
+            products = products.filter(category__id__exact=category_id)
         return products
 
 

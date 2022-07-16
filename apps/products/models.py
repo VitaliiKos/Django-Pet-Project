@@ -12,23 +12,26 @@ class CategoryModel(models.Model):
     slug = models.SlugField(max_length=200, db_index=True, unique=True)
 
     def __str__(self):
-        return self.name
+        return self.name.capitalize()
 
 
 class ProductModel(models.Model):
     class Meta:
         ordering = ('name',)
-        index_together = (('id', 'slug'),)
+        verbose_name = 'Продукт'
+        verbose_name_plural = 'Продукти'
+
+        # index_together = (('id', 'slug'),)
 
     category = models.ForeignKey(CategoryModel, related_name='products', on_delete=models.CASCADE)
     name = models.CharField(max_length=200, db_index=True, validators=(
         validators.MaxLengthValidator(200),
         validators.MinLengthValidator(2)
     ))
-    slug = models.SlugField(max_length=200, db_index=True, validators=(
-        validators.MaxLengthValidator(200),
-        validators.MinLengthValidator(2)
-    ))
+    # slug = models.SlugField(max_length=200, db_index=True, blank=True, validators=(
+    #     validators.MaxLengthValidator(200),
+    #     validators.MinLengthValidator(2)
+    # ))
     image = models.ImageField(upload_to='products/%Y/%m/%d', blank=True)
     description = models.TextField(blank=True)
 
@@ -42,4 +45,4 @@ class ProductModel(models.Model):
     updated = models.DateTimeField(auto_now=True)
 
     def __str__(self):
-        return self.name
+        return self.name.capitalize()

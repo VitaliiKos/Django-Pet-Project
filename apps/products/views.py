@@ -1,10 +1,12 @@
-from rest_framework.generics import ListCreateAPIView, RetrieveUpdateDestroyAPIView, CreateAPIView
+from rest_framework.generics import CreateAPIView, ListCreateAPIView, RetrieveUpdateDestroyAPIView
+from rest_framework.permissions import AllowAny, IsAdminUser, IsAuthenticated, IsAuthenticatedOrReadOnly
 
 from apps.products.models import CategoryModel, ProductModel
-from apps.products.serializers import ProductSerializer, CategorySerializer
+from apps.products.serializers import CategorySerializer, ProductSerializer
 
 
 class ProductListCreateView(ListCreateAPIView):
+    permission_classes = (IsAuthenticatedOrReadOnly,)
     serializer_class = ProductSerializer
 
     def get_queryset(self):
@@ -17,7 +19,7 @@ class ProductListCreateView(ListCreateAPIView):
 
 
 class ReadUpdateDeleteView(RetrieveUpdateDestroyAPIView):
-    queryset = ProductModel.objects.all()
+    queryset = ProductModel.objects.all().order_by('id')
     serializer_class = ProductSerializer
 
 

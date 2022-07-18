@@ -1,5 +1,5 @@
-from django.db import models
 from django.core import validators
+from django.db import models
 
 
 class CategoryModel(models.Model):
@@ -7,8 +7,10 @@ class CategoryModel(models.Model):
         ordering = ('name',)
         verbose_name = 'Категорія'
         verbose_name_plural = 'Категорії'
+        db_table = 'category'
 
     name = models.CharField(max_length=200, db_index=True)
+
     slug = models.SlugField(max_length=200, db_index=True, unique=True)
 
     def __str__(self):
@@ -20,6 +22,7 @@ class ProductModel(models.Model):
         ordering = ('name',)
         verbose_name = 'Продукт'
         verbose_name_plural = 'Продукти'
+        db_table = 'product'
 
         # index_together = (('id', 'slug'),)
 

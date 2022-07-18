@@ -1,24 +1,34 @@
-from django.db import models
 from django.contrib.auth.models import User
-from datetime import datetime
+from django.db import models
 
 from apps.products.models import ProductModel
-# from shop.models.cart import CartItemManager
+from apps.user.models import UserModel
+
+# class UserModel(models.Model):
+#     name = models.CharField(max_length=255, null=False)
+#     created_at = models.DateTimeField(auto_now_add=True)
+#     updated_at = models.DateTimeField(auto_now=True)
+#
+#     def __str__(self):
+#         return "{} - {} - {}".format(self.name,
+#                                      self.created_at,
+#                                      self.updated_at)
 
 
-class CartModel(models.Model):
-    # user = models.ForeignKey(User, on_delete=models.CASCADE)
-    created_at = models.DateTimeField(default=datetime.now)
+class Cart(models.Model):
+    class Meta:
+        db_table = 'cart'
 
-
-class CartItemModel(models.Model):
-    product = models.ForeignKey(ProductModel, on_delete=models.CASCADE)
-    quantity = models.IntegerField(default=1)
-    price_ht = models.FloatField(blank=True)
-    cart = models.ForeignKey('CartModel', on_delete=models.CASCADE)
-
-    def price_ttc(self):
-        return self.price_ht
+    user = models.ForeignKey(UserModel, on_delete=models.SET_NULL, null=True, blank=True)
+    item = models.ForeignKey(ProductModel, on_delete=models.SET_NULL, null=True, blank=True)
+    quantity = models.IntegerField(null=False)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):
-        return self.product
+        return "{} - {} - {} - {}".format(
+            self.user,
+            self.item,
+            self.quantity,
+            self.created_at,
+            self.updated_at)
